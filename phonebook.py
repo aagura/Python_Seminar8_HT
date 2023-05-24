@@ -27,7 +27,9 @@ def show_menu ():
                   +'3-найти по номеру,'+ '\n'
                   +'4-добавить данные, '+ '\n'
                   +'5-сохранить в текстовый файл,'+ '\n'
-                  +'6-выход:'+ '\n'+'\n'
+                  +'6-изменить данные,'+ '\n'
+                  +'7-удалить данные,'+ '\n'
+                  +'8-выход:'+ '\n'+'\n'
                   +'Выберите режим:'))
     clear()
     return menu
@@ -137,11 +139,37 @@ def write_csv(file_name,phone_book):
 def  get_file_name ():
     name = input('Введите имя файла: ') +'.txt'
     return name
+def edit_user(phone_book, name):
+    for item in phone_book:
+        if item["Фамилия"]==name:
+            clear()
+            item['Фамилия']=input('Введите новую Фамилию: ')
+            item['Имя']=input('Введите Имя: ')
+            item ['Телефон']=input('Введите Телефон: ')
+            item ['Описание']=input('Введите Описание: ')              
+            clear ()
+            return 
+    print ("Такой фамилии нет")
+    os.system('pause')
+
+    clear ()
+    return 
+
+def delete_user(phone_book, name):
+    for item in phone_book:
+        if item["Фамилия"]==name:
+            phone_book.remove(item)
+            return 
+    print ("Такой фамилии нет")
+    os.system('pause')
+
+    clear ()
+    return 
 
 def work_with_phonebook():
     choice = show_menu()
     phone_book =read_csv('phonebook.csv')
-    while (choice != 6):
+    while (choice != 8):
         if choice == 1:
             print_result(phone_book)
         elif choice == 2:
@@ -159,6 +187,18 @@ def work_with_phonebook():
             file_name = get_file_name ()
             write_txt(file_name, phone_book)
             clear ()
+        elif choice == 6:
+            name = get_search_name()
+            edit_user (phone_book, name)
+            write_csv('phonebook.csv',phone_book) 
+            clear()
+            print ("Запись отредактирована")
+        elif choice == 7:
+            name = get_search_name()
+            delete_user(phone_book, name)
+            write_csv('phonebook.csv',phone_book) 
+            clear()
+            print ("Запись удалена")
         else : print ('некорректный ввод, повторите')
         choice = show_menu()
         
